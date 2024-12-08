@@ -1,14 +1,22 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 
-class Counter with ChangeNotifier {
-  int _count = 0;
-  int get count => _count;
-  void increment (){
-    _count++;
+class CounterProvider extends ChangeNotifier {
+  int _counter = 0;
+
+  int get counter => _counter;
+
+  void increment() {
+    _counter++;
     notifyListeners();
   }
-  void decrement (){
-    _count--;
+
+  void decrement() {
+    _counter--;
     notifyListeners();
-  }  
+  }
+
+  void reset() {
+    _counter = 0;
+    notifyListeners();
+  }
 }
