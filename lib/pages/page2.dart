@@ -11,7 +11,9 @@ class Page2 extends StatelessWidget {
     final counter = context.watch<CounterProvider>();
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Page 2')),
+      appBar: AppBar(
+        title: const Text('Page 2')
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

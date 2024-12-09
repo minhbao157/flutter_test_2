@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:namer_app/provider/color_state.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import 'provider/counter.dart';
@@ -8,10 +9,13 @@ import 'pages/page3.dart';
 
 void main() {
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => CounterProvider(),
-      child: const MyApp(),
-    ),
+    MultiProvider(
+      providers:[
+      ChangeNotifierProvider(create: (_) => CounterProvider()),
+      ChangeNotifierProvider(create: (_) => ColorState()),
+    ],
+    child: const MyApp(),
+  ),
   );
 }
 
@@ -70,11 +74,9 @@ class _MainScaffoldState extends State<MainScaffold> {
   }
 }
 
-// Định nghĩa NavigatorKey toàn cục
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
 final GlobalKey<NavigatorState> _shellNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'shell');
 
-// Cấu hình GoRouter
 final GoRouter _router = GoRouter(
   navigatorKey: _rootNavigatorKey,
   debugLogDiagnostics: true,
