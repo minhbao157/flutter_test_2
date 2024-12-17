@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import '../provider/color_provider.dart';
+import '../provider/multi_block_picker.dart';
 
 class Page3 extends StatefulWidget {
   const Page3({Key? key}) : super(key: key);
@@ -10,16 +12,41 @@ class Page3 extends StatefulWidget {
 }
 
 class _Page3State extends State<Page3> {
-  // Lưu trữ các màu sắc đã chọn
-  List<Color> selectedColors = [];
+  final List<Color> availableColors = [
+    Colors.red,
+    Colors.pink,
+    Colors.purple,
+    Colors.deepPurple,
+    Colors.indigo,
+    Colors.blue,
+    Colors.lightBlue,
+    Colors.cyan,
+    Colors.teal,
+    Colors.green,
+    Colors.lightGreen,
+    Colors.lime,
+    Colors.yellow,
+    Colors.amber,
+    Colors.orange,
+    Colors.deepOrange,
+    Colors.brown,
+    Colors.grey,
+    Colors.blueGrey,
+    Colors.black,
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    // Reset lại màu đã chọn trong ColorProvider khi trang được tạo lại
+    Provider.of<ColorProvider>(context, listen: false).clearColors();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Page 3')),
-      body: Container(
-        alignment: Alignment.center,
-        padding: const EdgeInsets.all(20),
+      body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -29,48 +56,47 @@ class _Page3State extends State<Page3> {
                   context: context,
                   builder: (BuildContext context) {
                     return AlertDialog(
-                      title: const Text('Pick a color!'),
-                      content: SingleChildScrollView(
-                        child: MultipleChoiceBlockPicker(
-                          pickerColors: [Colors.red, Colors.yellow, Colors.green],
-                          onColorsChanged: (List<Color> colors) {
-                            setState(() {
-                              selectedColors = colors;
-                            });
-                          },
-                        ),
+                      title: const Text('Pick multiple colors!'),
+                      content: Consumer<ColorProvider>(
+                        builder: (context, colorProvider, child) {
+                          return MultiBlockPicker(
+                            availableColors: availableColors,
+                            selectedColors: colorProvider.selectedColors,
+                            onColorToggle: (color) {
+                              colorProvider.toggleColor(color);
+                            },
+                          );
+                        },
                       ),
-                      actions: <Widget>[
-                        ElevatedButton(
+                      actions: [
+                        TextButton(
+                          onPressed: () => context.pop(),
                           child: const Text('DONE'),
-                          onPressed: () {
-                            context.pop();
-                          },
                         ),
                       ],
                     );
                   },
                 );
               },
-              child: const Text("Multiple Choice Color Picker"),
+              child: const Text("Pick Multiple Colors"),
             ),
             const SizedBox(height: 20),
-            Wrap(
-              spacing: 10,
-              runSpacing: 10,
-              children: selectedColors.map((color) {
-                return GestureDetector(
-                  onLongPress: () {
-                    setState(() {
-                      selectedColors.remove(color);
-                    });
-                  },
-                  child: CircleAvatar(
-                    radius: 30,
-                    backgroundColor: color,
-                  ),
+            Consumer<ColorProvider>(
+              builder: (context, colorProvider, child) {
+                return Wrap(
+                  spacing: 10,
+                  runSpacing: 10,
+                  children: colorProvider.selectedColors.map((color) {
+                    return GestureDetector(
+                      onLongPress: () => colorProvider.removeColor(color),
+                      child: CircleAvatar(
+                        backgroundColor: color,
+                        radius: 30,
+                      ),
+                    );
+                  }).toList(),
                 );
-              }).toList(),
+              },
             ),
           ],
         ),

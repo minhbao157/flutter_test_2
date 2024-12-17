@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:namer_app/provider/color_state.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
+import 'provider/color_provider.dart';
 import 'provider/counter.dart';
 import 'pages/page1.dart';
 import 'pages/page2.dart';
@@ -12,7 +12,7 @@ void main() {
     MultiProvider(
       providers:[
       ChangeNotifierProvider(create: (_) => CounterProvider()),
-      ChangeNotifierProvider(create: (_) => ColorState()),
+      ChangeNotifierProvider(create: (_) => ColorProvider()),
     ],
     child: const MyApp(),
   ),
