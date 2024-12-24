@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'color_item.dart'; // Đường dẫn tới ColorItem
 
 class MultiBlockPicker extends StatelessWidget {
   final List<Color> availableColors;
@@ -15,32 +16,14 @@ class MultiBlockPicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Wrap(
-      alignment: WrapAlignment.center,  
+      alignment: WrapAlignment.center,
       spacing: 10,
       runSpacing: 10,
       children: availableColors.map((color) {
-        final isSelected = selectedColors.contains(color);
-        return GestureDetector(
-          onTap: () => onColorToggle(color),
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              Container(
-                width: 50,
-                height: 50,
-                decoration: BoxDecoration(
-                  color: color,
-                  shape: BoxShape.circle,
-                ),
-              ),
-              if (isSelected)
-                const Icon(
-                  Icons.check,
-                  color: Colors.black,
-                  size: 30,
-                ),
-            ],
-          ),
+        return ColorItem(
+          color: color,
+          isSelected: selectedColors.contains(color),
+          onToggle: onColorToggle,
         );
       }).toList(),
     );
