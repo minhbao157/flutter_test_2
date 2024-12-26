@@ -31,4 +31,6 @@ class ColorProvider extends ChangeNotifier {
     selectedColors.clear();
     notifyListeners();
   }
+
+  
 }
