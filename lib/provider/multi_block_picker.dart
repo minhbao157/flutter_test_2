@@ -39,6 +39,7 @@ class MultiBlockPicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Lấy provider ColorPickerProvider từ context
     final provider = Provider.of<ColorPickerProvider>(context);
 
     return Wrap(
@@ -46,9 +47,10 @@ class MultiBlockPicker extends StatelessWidget {
       spacing: 10,
       runSpacing: 10,
       children: provider.availableColors.map((color) {
+        // Kiểm tra màu có được chọn tạm thời không
         final isSelected = provider.tempSelectedColors.contains(color);
         return GestureDetector(
-          onTap: () => provider.toggleTempColor(color),
+          onTap: () => provider.toggleTempColor(color), 
           child: Stack(
             alignment: Alignment.center,
             children: [

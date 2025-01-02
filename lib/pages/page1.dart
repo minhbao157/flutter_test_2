@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
-import '../provider/counter.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../cubit/counter_cubit.dart';
 
 class Page1 extends StatelessWidget {
   const Page1({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final counter = context.watch<CounterProvider>();
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Page 1')
@@ -18,9 +16,13 @@ class Page1 extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-            'Number: ${counter.counter}',
-            style: TextStyle(fontSize: 20),
+            BlocBuilder<CounterCubit, CounterState>(
+              builder: (context, state){
+                return Text(
+                  'Number: ${state.counter}',
+                  style: TextStyle(fontSize: 20),
+                );
+              },
             ),
             const SizedBox(height: 10),
             Row(
@@ -28,13 +30,13 @@ class Page1 extends StatelessWidget {
               children: [
                 IconButton(
                   onPressed: () {
-                    counter.decrement();  
+                    context.read<CounterCubit>().decrement();  
                   },
                   icon: const Icon(Icons.remove),
                 ),
                 IconButton(
                   onPressed: (){
-                    counter.increment();
+                    context.read<CounterCubit>().increment();
                   },
                   icon: const Icon(Icons.add),
                 ),

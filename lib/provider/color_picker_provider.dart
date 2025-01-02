@@ -31,7 +31,6 @@ class ColorPickerProvider extends ChangeNotifier {
   List<Color> get selectedColors => _selectedColors;
   List<Color> get tempSelectedColors => _tempSelectedColors;
 
-  // Khởi tạo màu mặc định trong dialog
   void initializeDefaultColors() {
     _tempSelectedColors = selectedColors.isNotEmpty
         ? List.from(selectedColors)
@@ -39,31 +38,28 @@ class ColorPickerProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Thêm hoặc xóa màu trong danh sách tạm thời
   void toggleTempColor(Color color) {
-    if (tempSelectedColors.contains(color)) {
-      tempSelectedColors.remove(color);
+    if (_tempSelectedColors.contains(color)) {
+      _tempSelectedColors.remove(color);
     } else {
-      tempSelectedColors.add(color);
+      _tempSelectedColors.add(color);
     }
     notifyListeners();
   }
 
-  // Đồng bộ danh sách chính thức với danh sách tạm thời
   void submitColors() {
-    _selectedColors = List.from(tempSelectedColors);
+    _selectedColors = List.from(_tempSelectedColors);
     notifyListeners();
   }
 
-  // Xóa tất cả màu trong danh sách tạm thời
   void clearTempColors() {
-    tempSelectedColors.clear();
+    _tempSelectedColors.clear();
     notifyListeners();
   }
 
   void resetColors() {
-    _selectedColors.clear(); // Xóa danh sách màu chính thức
-    _tempSelectedColors.clear(); // Xóa danh sách màu tạm thời
+    _selectedColors.clear();
+    _tempSelectedColors.clear();
     notifyListeners();
   }
 }

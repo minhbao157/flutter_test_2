@@ -1,21 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'cubit/color_picker_cubit.dart';
 import 'provider/color_picker_provider.dart';
-import 'provider/counter.dart';
+
+import 'cubit/counter_cubit.dart';
 import 'pages/page1.dart';
 import 'pages/page2.dart';
 import 'pages/page3.dart';
+import 'pages/page4.dart';
 
 void main() {
   runApp(
     MultiProvider(
-      providers:[
-      ChangeNotifierProvider(create: (_) => CounterProvider()),
-      ChangeNotifierProvider(create: (_) => ColorPickerProvider()),
-    ],
-    child: const MyApp(),
-  ),
+      providers: [
+        BlocProvider(create: (_) => CounterCubit()),
+        ChangeNotifierProvider(create: (_) => ColorPickerProvider()),
+        BlocProvider(create: (_) => ColorPickerCubit()),
+      ],
+      child: const MyApp(),
+    ),
   );
 }
 
@@ -43,7 +48,7 @@ class MainScaffold extends StatefulWidget {
 class _MainScaffoldState extends State<MainScaffold> {
   int _currentIndex = 0;
 
-  static const List<String> _tabs = ['/page1', '/page3'];
+  static const List<String> _tabs = ['/page1', '/page3', '/page4'];
 
   void _onTabTapped(int index) {
     setState(() {
@@ -68,6 +73,10 @@ class _MainScaffoldState extends State<MainScaffold> {
             icon: Icon(Icons.color_lens),
             label: 'Pick color',
           ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.color_lens),
+            label: 'Pick Color 2',
+          ),
         ],
       ),
     );
@@ -80,7 +89,7 @@ final GlobalKey<NavigatorState> _shellNavigatorKey = GlobalKey<NavigatorState>(d
 final GoRouter _router = GoRouter(
   navigatorKey: _rootNavigatorKey,
   debugLogDiagnostics: true,
-  initialLocation: '/page1', 
+  initialLocation: '/page1',
   routes: <RouteBase>[
     ShellRoute(
       navigatorKey: _shellNavigatorKey,
@@ -98,7 +107,11 @@ final GoRouter _router = GoRouter(
         ),
         GoRoute(
           path: '/page3',
-          builder: (context, state) => const Page3(),
+          builder: (context, state) => const Page3(), 
+        ),
+        GoRoute(
+          path: '/page4',
+          builder: (context, state) => const Page4(),
         ),
       ],
     ),

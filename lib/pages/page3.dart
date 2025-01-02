@@ -164,11 +164,11 @@ import 'package:provider/provider.dart';
 import '../provider/color_picker_provider.dart';
 import '../provider/multi_block_picker.dart';
 
-
 class Page3 extends StatefulWidget {
   const Page3({Key? key}) : super(key: key);
+
   @override
-  _Page3State createState()=> _Page3State();
+  _Page3State createState() => _Page3State();
 }
 
 class _Page3State extends State<Page3> {
@@ -178,7 +178,7 @@ class _Page3State extends State<Page3> {
     // Reset danh sách màu khi Page3 được khởi tạo
     Provider.of<ColorPickerProvider>(context, listen: false).resetColors();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<ColorPickerProvider>(context);
@@ -191,35 +191,35 @@ class _Page3State extends State<Page3> {
           children: [
             ElevatedButton(
               onPressed: () {
-                provider.initializeDefaultColors(); // Khởi tạo màu mặc định
+                provider.initializeDefaultColors();
                 showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
                     title: const Text('Pick Colors'),
-                    content: const MultiBlockPicker(), // Widget chọn màu
+                    content: const MultiBlockPicker(),
                     actions: [
                       TextButton(
-                        onPressed: provider.clearTempColors, // Xóa tất cả màu tạm thời
+                        onPressed: provider.clearTempColors,
                         child: const Text('CLEAR'),
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                         TextButton(
-                          onPressed: () {
-                            context.pop(); // Đóng hộp thoại mà không lưu
-                          },
-                          child: const Text('CANCEL'),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            provider.submitColors(); // Đồng bộ danh sách chính thức
-                            context.pop(); // Đóng dialog
-                          },
-                          child: const Text('DONE'),
-                        ),
-                      ],
-                    ),
+                          TextButton(
+                            onPressed: () {
+                              context.pop();
+                            },
+                            child: const Text('CANCEL'),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              provider.submitColors();
+                              context.pop();
+                            },
+                            child: const Text('DONE'),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 );
@@ -227,15 +227,14 @@ class _Page3State extends State<Page3> {
               child: const Text('Pick Multiple Colors'),
             ),
             const SizedBox(height: 20),
-            // Hiển thị các màu đã chọn (danh sách chính thức)
             Wrap(
               spacing: 10,
               runSpacing: 10,
               children: provider.selectedColors.map((color) {
                 return GestureDetector(
                   onLongPress: () {
-                    provider.toggleTempColor(color); // Xóa màu khi giữ lâu
-                    provider.submitColors(); // Cập nhật danh sách chính thức
+                    provider.toggleTempColor(color);
+                    provider.submitColors();
                   },
                   child: CircleAvatar(
                     backgroundColor: color,

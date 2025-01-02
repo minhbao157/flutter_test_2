@@ -29,7 +29,7 @@ class _ColorItemState extends State<ColorItem> {
     setState(() {
       _isSelected = !_isSelected;
     });
-    widget.onToggle(widget.color); // Gọi callback để thông báo trạng thái
+    widget.onToggle(widget.color); 
   }
 
   @override
